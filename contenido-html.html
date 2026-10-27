@@ -57,8 +57,9 @@
     <section class="tarjeta" id="ejemplo-1">
       <h3>Ejemplo 1 · ¿Qué puede hacer JavaScript?</h3>
       <div class="demo">
-        <p id="demo">JavaScript puede cambiar el contenido HTML.</p>
+        <p id="demo" aria-live="polite">JavaScript puede cambiar el contenido HTML.</p>
         <button type="button" class="boton" id="btn-cambiar">¡Haz clic!</button>
+        <button type="button" class="boton boton--secundario" id="btn-restablecer">Restablecer</button>
       </div>
       <pre><code>&lt;p id="demo"&gt;JavaScript puede cambiar el contenido HTML.&lt;/p&gt;
 &lt;button type="button" id="btn-cambiar"&gt;¡Haz clic!&lt;/button&gt;
@@ -97,6 +98,37 @@ document.getElementById('btn-lista').addEventListener('click', () =&gt; {
         <code>innerHTML</code> no solo admite texto: también interpreta etiquetas. Aquí construimos una cadena con
         varios elementos <code>&lt;li&gt;</code> usando <em>template literals</em> y la insertamos de una vez
         dentro de la lista, que el navegador vuelve a dibujar con los nuevos elementos.
+      </p>
+    </section>
+
+    <!-- Ejemplo 3 (añadido en hotfix/milloresV_1_0): innerHTML frente a textContent -->
+    <section class="tarjeta" id="ejemplo-3">
+      <h3>Ejemplo 3 · <code>innerHTML</code> frente a <code>textContent</code></h3>
+      <div class="demo">
+        <label for="entrada-usuario">Escribe algo (prueba con <code>&lt;b&gt;hola&lt;/b&gt;</code>):</label>
+        <input id="entrada-usuario" type="text" value="&lt;b&gt;hola&lt;/b&gt;">
+        <button type="button" class="boton" id="btn-inner">Insertar con innerHTML</button>
+        <button type="button" class="boton boton--secundario" id="btn-text">Insertar con textContent</button>
+        <p>Resultado: <span id="resultado" aria-live="polite">—</span></p>
+      </div>
+      <pre><code>const entrada = document.getElementById('entrada-usuario');
+const resultado = document.getElementById('resultado');
+
+// innerHTML interpreta las etiquetas: &lt;b&gt;hola&lt;/b&gt; se ve en negrita
+document.getElementById('btn-inner').addEventListener('click', () =&gt; {
+  resultado.innerHTML = entrada.value;
+});
+
+// textContent trata todo como texto: se ven las etiquetas tal cual
+document.getElementById('btn-text').addEventListener('click', () =&gt; {
+  resultado.textContent = entrada.value;
+});</code></pre>
+      <h4>Explicación</h4>
+      <p>
+        Las dos propiedades cambian el contenido de un elemento, pero <code>innerHTML</code> <strong>interpreta</strong>
+        el texto como HTML y <code>textContent</code> lo inserta como texto plano. Cuando el contenido viene del
+        usuario es más seguro usar <code>textContent</code>: con <code>innerHTML</code> alguien podría inyectar
+        código malicioso en la página (ataque <abbr title="Cross-Site Scripting">XSS</abbr>).
       </p>
     </section>
   </main>
