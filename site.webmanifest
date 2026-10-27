@@ -1,0 +1,14 @@
+{
+  "short_name": "JS DOM",
+  "name": "Curso JavaScript en el DOM",
+  "icons": [
+    {
+      "src": "icon.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    }
+  ],
+  "start_url": "./",
+  "background_color": "#fafafa",
+  "theme_color": "#1e2a44"
+}

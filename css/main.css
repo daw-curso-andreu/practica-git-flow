@@ -1,0 +1,183 @@
+/* ==========================================================================
+   Estilos propios del curso «JavaScript en el DOM»
+   (se cargan después de css/style.css del HTML5 Boilerplate)
+   ========================================================================== */
+
+:root {
+  --azul-oscuro: #1e2a44;
+  --azul: #2f6fde;
+  --amarillo: #f7df1e;
+  --gris-claro: #f3f5f9;
+  --texto: #222;
+  --radio: 10px;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  color: var(--texto);
+  background: var(--gris-claro);
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* ---------- Cabecera con imagen de fondo ---------- */
+.cabecera {
+  background:
+    linear-gradient(rgba(30, 42, 68, 0.70), rgba(30, 42, 68, 0.85)),
+    url("../img/cabecera.svg") center / cover no-repeat;
+  color: #fff;
+  text-align: center;
+  padding: 3.5rem 1rem;
+}
+
+.cabecera__titulo {
+  font-size: clamp(2rem, 5vw, 3.2rem);
+  margin: 0.2rem 0;
+}
+
+.cabecera__titulo::after {
+  content: "";
+  display: block;
+  width: 80px;
+  height: 5px;
+  margin: 0.6rem auto 0;
+  background: var(--amarillo);
+  border-radius: 3px;
+}
+
+.cabecera__subtitulo,
+.cabecera__lema {
+  margin: 0;
+  opacity: 0.9;
+}
+
+/* ---------- Barra de navegación ---------- */
+.navegacion {
+  background: #fff;
+  border-bottom: 1px solid #dde2ec;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.navegacion__lista {
+  list-style: none;
+  margin: 0 auto;
+  padding: 0;
+  max-width: 960px;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.navegacion__lista li {
+  flex: 1 1 0;
+  min-width: 140px;
+}
+
+.navegacion__lista a {
+  display: block;
+  padding: 0.9rem 0.6rem;
+  text-align: center;
+  color: var(--azul-oscuro);
+  text-decoration: none;
+  font-weight: 600;
+  border-bottom: 3px solid transparent;
+}
+
+.navegacion__lista a:hover,
+.navegacion__lista a:focus-visible {
+  background: var(--gris-claro);
+}
+
+.navegacion__lista a[aria-current="page"] {
+  border-bottom-color: var(--azul);
+  color: var(--azul);
+}
+
+/* ---------- Contenido principal ---------- */
+.principal {
+  flex: 1;
+  width: 100%;
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+  box-sizing: border-box;
+}
+
+.tarjeta {
+  background: #fff;
+  border-radius: var(--radio);
+  padding: 1.5rem 2rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 8px rgba(30, 42, 68, 0.08);
+}
+
+.tarjeta h2 {
+  margin-top: 0;
+  color: var(--azul-oscuro);
+}
+
+/* Caja donde se ejecuta cada ejemplo interactivo */
+.demo {
+  border: 2px dashed #c9d3e6;
+  border-radius: var(--radio);
+  padding: 1rem 1.25rem;
+  margin: 1rem 0;
+  background: #fbfcfe;
+}
+
+.boton {
+  font: inherit;
+  cursor: pointer;
+  background: var(--azul);
+  color: #fff;
+  border: 0;
+  border-radius: 6px;
+  padding: 0.5rem 1rem;
+  margin: 0.25rem 0.25rem 0.25rem 0;
+}
+
+.boton:hover {
+  background: #2459b8;
+}
+
+.boton--secundario {
+  background: #6b778c;
+}
+
+/* Bloques de código de los ejemplos */
+pre {
+  background: #1e2a44;
+  color: #e8ecf5;
+  padding: 1rem;
+  border-radius: var(--radio);
+  overflow-x: auto;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+code {
+  font-family: ui-monospace, "Cascadia Code", Consolas, monospace;
+}
+
+p code,
+li code {
+  background: #e7ebf3;
+  padding: 0.1em 0.35em;
+  border-radius: 4px;
+}
+
+/* ---------- Pie de página ---------- */
+.pie {
+  background: var(--azul-oscuro);
+  color: #cfd6e6;
+  text-align: center;
+  padding: 1.25rem 1rem;
+  font-size: 0.9rem;
+}
+
+.pie p {
+  margin: 0.2rem 0;
+}

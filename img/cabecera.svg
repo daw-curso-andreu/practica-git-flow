@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="500" viewBox="0 0 1600 500">
+  <!-- Imagen de fondo de la cabecera: fragmentos de código JavaScript -->
+  <rect width="1600" height="500" fill="#24324f"/>
+  <g font-family="monospace" font-size="28" fill="#f7df1e" opacity="0.55">
+    <text x="40" y="70">document.getElementById("demo").innerHTML = "Hola";</text>
+    <text x="620" y="150">elemento.style.color = "red";</text>
+    <text x="120" y="230">img.src = "bombilla-on.svg";</text>
+    <text x="760" y="310">boton.addEventListener("click", cambiar);</text>
+    <text x="60" y="390">const p = document.querySelector("p");</text>
+    <text x="900" y="460">input.disabled = false;</text>
+  </g>
+  <g fill="#2f6fde" opacity="0.35">
+    <circle cx="1450" cy="90" r="120"/>
+    <circle cx="180" cy="470" r="90"/>
+  </g>
+  <text x="1260" y="300" font-family="monospace" font-size="160" font-weight="bold" fill="#f7df1e" opacity="0.25">JS</text>
+</svg>
