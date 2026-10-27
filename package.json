@@ -1,13 +1,15 @@
 {
-  "name": " ",
+  "name": "curso-javascript-dom",
   "version": "0.0.1",
-  "description": "",
+  "description": "Curso práctico de JavaScript aplicado a elementos HTML",
   "private": true,
   "keywords": [
-    ""
+    "javascript",
+    "dom",
+    "git-flow"
   ],
-  "license": "",
-  "author": "",
+  "license": "MIT",
+  "author": "Equipo de desarrollo (Usuarios 1, 2 y 3)",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "webpack serve --open --config webpack.config.dev.js",
