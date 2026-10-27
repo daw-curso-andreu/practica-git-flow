@@ -1,0 +1,165 @@
+<!doctype html>
+<html class="no-js" lang="es">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Modificar estilos CSS · JavaScript en el DOM</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/estilos.css">
+  <meta name="description" content="Curso práctico de JavaScript aplicado a la interacción con elementos HTML.">
+
+  <meta property="og:title" content="JavaScript en el DOM · Curso práctico">
+  <meta property="og:type" content="website">
+
+  <link rel="icon" href="favicon.ico" sizes="any">
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icon.png">
+
+  <link rel="manifest" href="site.webmanifest">
+  <meta name="theme-color" content="#1e2a44">
+</head>
+
+<body>
+
+  <!-- Cabecera: nombre del curso sobre una imagen de fondo -->
+  <header class="cabecera">
+    <div class="cabecera__contenido">
+      <p class="cabecera__subtitulo">Curso de formación para empresas</p>
+      <h1 class="cabecera__titulo">JavaScript en el DOM</h1>
+      <p class="cabecera__lema">Aprende a dar vida a tus páginas HTML</p>
+    </div>
+  </header>
+
+  <!-- Barra de navegación principal -->
+  <nav class="navegacion" aria-label="Navegación principal">
+    <ul class="navegacion__lista">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="contenido-html.html">Modificar contenido HTML</a></li>
+      <li><a href="estilos-css.html" aria-current="page">Modificar estilos CSS</a></li>
+      <li><a href="atributos-html.html">Modificar atributos HTML</a></li>
+    </ul>
+  </nav>
+
+  <!-- Contenido principal: sección «Modificar estilos CSS» -->
+  <main class="principal">
+    <section class="tarjeta">
+      <h2>Modificar estilos CSS</h2>
+      <p>
+        Cada elemento HTML tiene una propiedad <code>style</code> que permite cambiar sus estilos en línea desde
+        JavaScript. La sintaxis es <code>elemento.style.propiedad = 'valor'</code>, escribiendo la propiedad CSS en
+        <em>camelCase</em>: <code>font-size</code> pasa a ser <code>fontSize</code> y <code>background-color</code>
+        pasa a ser <code>backgroundColor</code>. Para cambios más grandes es mejor añadir o quitar clases con
+        <code>classList</code>.
+      </p>
+    </section>
+
+    <!-- Ejemplo 1: cambiar el tamaño de letra (como en el ejemplo de W3Schools) -->
+    <section class="tarjeta" id="ejemplo-1">
+      <h3>Ejemplo 1 · Cambiar el tamaño del texto</h3>
+      <div class="demo">
+        <p id="texto-tamano">JavaScript puede cambiar el estilo de un elemento HTML.</p>
+        <button type="button" class="boton" id="btn-tamano">¡Haz clic!</button>
+      </div>
+      <pre><code>// Seleccionamos el párrafo y el botón por su id
+const texto = document.getElementById('texto-tamano');
+
+document.getElementById('btn-tamano').addEventListener('click', () =&gt; {
+  // font-size en CSS  →  fontSize en JavaScript
+  texto.style.fontSize = '35px';
+});</code></pre>
+      <h4>Explicación</h4>
+      <p>
+        Al pulsar el botón se asigna un valor a <code>style.fontSize</code>. El navegador lo aplica como si
+        hubiéramos escrito <code>style="font-size: 35px"</code> en la etiqueta, por lo que tiene prioridad sobre las
+        reglas del archivo CSS.
+      </p>
+    </section>
+
+    <!-- Ejemplo 2: colores con un input de tipo color -->
+    <section class="tarjeta" id="ejemplo-2">
+      <h3>Ejemplo 2 · Elegir el color de fondo y del texto</h3>
+      <div class="demo">
+        <div id="caja-color" class="caja-color">Caja de ejemplo</div>
+        <label>Fondo <input type="color" id="color-fondo" value="#2f6fde"></label>
+        <label>Texto <input type="color" id="color-texto" value="#ffffff"></label>
+      </div>
+      <pre><code>const caja = document.getElementById('caja-color');
+
+// El evento 'input' se lanza cada vez que el usuario mueve el selector de color
+document.getElementById('color-fondo').addEventListener('input', (evento) =&gt; {
+  caja.style.backgroundColor = evento.target.value;   // background-color
+});
+
+document.getElementById('color-texto').addEventListener('input', (evento) =&gt; {
+  caja.style.color = evento.target.value;             // color
+});</code></pre>
+      <h4>Explicación</h4>
+      <p>
+        <code>evento.target.value</code> contiene el color elegido en formato hexadecimal (por ejemplo
+        <code>#ff0000</code>). Lo asignamos directamente a la propiedad de estilo correspondiente, así que la caja
+        cambia en tiempo real mientras se elige el color.
+      </p>
+    </section>
+
+    <!-- Ejemplo 3: mostrar y ocultar con display -->
+    <section class="tarjeta" id="ejemplo-3">
+      <h3>Ejemplo 3 · Mostrar y ocultar un elemento</h3>
+      <div class="demo">
+        <button type="button" class="boton" id="btn-ocultar">Ocultar</button>
+        <button type="button" class="boton boton--secundario" id="btn-mostrar">Mostrar</button>
+        <p id="texto-visible" class="aviso">👋 ¡Hola! Puedes esconderme con JavaScript.</p>
+      </div>
+      <pre><code>const aviso = document.getElementById('texto-visible');
+
+// display = 'none' quita el elemento del flujo de la página
+document.getElementById('btn-ocultar').addEventListener('click', () =&gt; {
+  aviso.style.display = 'none';
+});
+
+// display = 'block' lo vuelve a mostrar
+document.getElementById('btn-mostrar').addEventListener('click', () =&gt; {
+  aviso.style.display = 'block';
+});</code></pre>
+      <h4>Explicación</h4>
+      <p>
+        La propiedad <code>display</code> decide si un elemento se pinta o no. Con <code>none</code> desaparece y
+        el resto del contenido ocupa su sitio; con <code>block</code> vuelve a aparecer.
+      </p>
+    </section>
+
+    <!-- Ejemplo 4: classList.toggle para aplicar varios estilos a la vez -->
+    <section class="tarjeta" id="ejemplo-4">
+      <h3>Ejemplo 4 · Modo oscuro con <code>classList</code></h3>
+      <div class="demo" id="zona-tema">
+        <p>Esta zona cambia varios estilos a la vez al activar una clase CSS.</p>
+        <button type="button" class="boton" id="btn-tema">Cambiar tema</button>
+      </div>
+      <pre><code>/* CSS: la clase .tema-oscuro agrupa todos los estilos del modo oscuro */
+.tema-oscuro { background: #1e2a44; color: #f7df1e; }
+
+// JS: toggle() añade la clase si no está y la quita si ya está
+document.getElementById('btn-tema').addEventListener('click', () =&gt; {
+  document.getElementById('zona-tema').classList.toggle('tema-oscuro');
+});</code></pre>
+      <h4>Explicación</h4>
+      <p>
+        En lugar de cambiar propiedades una a una, definimos los estilos en una clase CSS y JavaScript solo se
+        encarga de ponerla o quitarla. Es la forma más limpia de mantener separados el diseño (CSS) y el
+        comportamiento (JavaScript).
+      </p>
+    </section>
+  </main>
+
+  <!-- Pie de página -->
+  <footer class="pie">
+    <p>&copy; 2026 · Curso «JavaScript en el DOM» · Práctica de Despliegue de Aplicaciones Web</p>
+    <p>Desarrollado siguiendo la metodología <em>Git Flow</em>.</p>
+  </footer>
+
+  <script src="js/app.js"></script>
+  <script src="js/estilos.js"></script>
+</body>
+
+</html>
