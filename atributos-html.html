@@ -1,0 +1,143 @@
+<!doctype html>
+<html class="no-js" lang="es">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Modificar atributos HTML · JavaScript en el DOM</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/main.css">
+  <meta name="description" content="Curso práctico de JavaScript aplicado a la interacción con elementos HTML.">
+
+  <meta property="og:title" content="JavaScript en el DOM · Curso práctico">
+  <meta property="og:type" content="website">
+
+  <link rel="icon" href="favicon.ico" sizes="any">
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icon.png">
+
+  <link rel="manifest" href="site.webmanifest">
+  <meta name="theme-color" content="#1e2a44">
+</head>
+
+<body>
+
+  <!-- Cabecera: nombre del curso sobre una imagen de fondo -->
+  <header class="cabecera">
+    <div class="cabecera__contenido">
+      <p class="cabecera__subtitulo">Curso de formación para empresas</p>
+      <h1 class="cabecera__titulo">JavaScript en el DOM</h1>
+      <p class="cabecera__lema">Aprende a dar vida a tus páginas HTML</p>
+    </div>
+  </header>
+
+  <!-- Barra de navegación principal -->
+  <nav class="navegacion" aria-label="Navegación principal">
+    <ul class="navegacion__lista">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="contenido-html.html">Modificar contenido HTML</a></li>
+      <li><a href="estilos-css.html">Modificar estilos CSS</a></li>
+      <li><a href="atributos-html.html" aria-current="page">Modificar atributos HTML</a></li>
+    </ul>
+  </nav>
+
+  <!-- Contenido principal: sección «Modificar atributos HTML» -->
+  <main class="principal">
+    <section class="tarjeta">
+      <h2>Modificar atributos HTML</h2>
+      <p>
+        Los atributos (<code>src</code>, <code>href</code>, <code>alt</code>, <code>disabled</code>…) definen cómo se
+        comporta y qué muestra cada elemento. Desde JavaScript podemos leerlos y cambiarlos de dos formas:
+        accediendo directamente a la <strong>propiedad</strong> del elemento (<code>img.src = '...'</code>) o con los
+        métodos <code>getAttribute()</code> y <code>setAttribute()</code>.
+      </p>
+    </section>
+
+    <!-- Ejemplo 1: cambiar el atributo src de una imagen -->
+    <section class="tarjeta" id="ejemplo-1">
+      <h3>Ejemplo 1 · Encender y apagar una bombilla</h3>
+      <div class="demo">
+        <button type="button" class="boton" id="btn-encender">Encender</button>
+        <img id="bombilla" src="img/bombilla-off.svg" alt="Bombilla apagada" width="100" height="160">
+        <button type="button" class="boton boton--secundario" id="btn-apagar">Apagar</button>
+      </div>
+      <pre><code>const bombilla = document.getElementById('bombilla');
+
+document.getElementById('btn-encender').addEventListener('click', () =&gt; {
+  bombilla.src = 'img/bombilla-on.svg';   // cambiamos la imagen
+  bombilla.alt = 'Bombilla encendida';    // y su texto alternativo
+});
+
+document.getElementById('btn-apagar').addEventListener('click', () =&gt; {
+  bombilla.src = 'img/bombilla-off.svg';
+  bombilla.alt = 'Bombilla apagada';
+});</code></pre>
+      <h4>Explicación</h4>
+      <p>
+        La imagen es la misma etiqueta <code>&lt;img&gt;</code> todo el rato; lo único que cambia es el valor de su atributo
+        <code>src</code>. Al modificarlo, el navegador descarga y muestra el nuevo archivo. Cambiamos también
+        <code>alt</code> para que la descripción siga siendo correcta para lectores de pantalla.
+      </p>
+    </section>
+
+    <!-- Ejemplo 2: atributos booleanos (disabled) y setAttribute -->
+    <section class="tarjeta" id="ejemplo-2">
+      <h3>Ejemplo 2 · Activar un campo de formulario</h3>
+      <div class="demo">
+        <label for="campo-nombre">Nombre:</label>
+        <input id="campo-nombre" type="text" placeholder="Campo desactivado" disabled>
+        <button type="button" class="boton" id="btn-activar">Activar / desactivar</button>
+        <p>Valor actual de <code>disabled</code>: <strong id="estado-campo">true</strong></p>
+      </div>
+      <pre><code>const campo = document.getElementById('campo-nombre');
+
+document.getElementById('btn-activar').addEventListener('click', () =&gt; {
+  campo.disabled = !campo.disabled;   // invertimos el atributo booleano
+  campo.setAttribute('placeholder', campo.disabled ? 'Campo desactivado' : 'Escribe tu nombre');
+  document.getElementById('estado-campo').innerHTML = campo.disabled;
+});</code></pre>
+      <h4>Explicación</h4>
+      <p>
+        <code>disabled</code> es un atributo <em>booleano</em>: si está presente el campo no se puede usar. Con la
+        propiedad <code>campo.disabled</code> lo añadimos o quitamos, y con <code>setAttribute('placeholder', …)</code>
+        cambiamos el texto de ayuda según el estado.
+      </p>
+    </section>
+
+    <!-- Ejemplo 3: getAttribute / setAttribute con enlaces -->
+    <section class="tarjeta" id="ejemplo-3">
+      <h3>Ejemplo 3 · Cambiar el destino de un enlace</h3>
+      <div class="demo">
+        <p>Enlace: <a id="enlace" href="https://developer.mozilla.org/es/" target="_blank" rel="noopener">Documentación de referencia</a></p>
+        <button type="button" class="boton" id="btn-enlace">Cambiar destino</button>
+        <p>Destino actual: <code id="destino">https://developer.mozilla.org/es/</code></p>
+      </div>
+      <pre><code>const enlace = document.getElementById('enlace');
+const destinos = ['https://developer.mozilla.org/es/', 'https://www.w3schools.com/js/'];
+
+document.getElementById('btn-enlace').addEventListener('click', () =&gt; {
+  const actual = enlace.getAttribute('href');               // leemos el atributo
+  const nuevo = actual === destinos[0] ? destinos[1] : destinos[0];
+  enlace.setAttribute('href', nuevo);                       // y lo modificamos
+  document.getElementById('destino').innerHTML = nuevo;
+});</code></pre>
+      <h4>Explicación</h4>
+      <p>
+        <code>getAttribute('href')</code> devuelve el valor tal como está escrito en el HTML y
+        <code>setAttribute('href', nuevo)</code> lo sustituye. Pasa el ratón por encima del enlace después de pulsar el
+        botón para comprobar que la dirección ha cambiado.
+      </p>
+    </section>
+  </main>
+
+  <!-- Pie de página -->
+  <footer class="pie">
+    <p>&copy; 2026 · Curso «JavaScript en el DOM» · Práctica de Despliegue de Aplicaciones Web</p>
+    <p>Desarrollado siguiendo la metodología <em>Git Flow</em>.</p>
+  </footer>
+
+  <script src="js/app.js"></script>
+  <script src="js/atributos.js"></script>
+</body>
+
+</html>
