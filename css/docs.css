@@ -1,0 +1,187 @@
+/* Estilos de la documentación (rama gh-pages) */
+:root {
+  --fondo: #f6f8fb;
+  --tarjeta: #ffffff;
+  --texto: #1f2328;
+  --suave: #59636e;
+  --borde: #d8dee4;
+  --azul: #2f6fde;
+  --azul-oscuro: #1e2a44;
+  --amarillo: #f7df1e;
+  --main: #2f6fde;
+  --develop: #d29922;
+  --feature: #8250df;
+  --release: #1a7f37;
+  --hotfix: #cf222e;
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  color: var(--texto);
+  background: var(--fondo);
+  line-height: 1.6;
+}
+
+a { color: var(--azul); }
+
+.cabecera {
+  background: linear-gradient(rgba(30, 42, 68, .82), rgba(30, 42, 68, .92)), url("../demo/img/cabecera.svg") center / cover;
+  color: #fff;
+  padding: 3rem 1rem 2.5rem;
+  text-align: center;
+}
+
+.cabecera h1 { margin: .2rem 0; font-size: clamp(1.7rem, 4vw, 2.6rem); }
+.cabecera p { margin: .2rem 0; opacity: .9; }
+
+.enlaces {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .6rem;
+  justify-content: center;
+  margin-top: 1.4rem;
+}
+
+.enlaces a {
+  color: var(--azul-oscuro);
+  background: var(--amarillo);
+  text-decoration: none;
+  font-weight: 700;
+  padding: .5rem .9rem;
+  border-radius: 999px;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 260px minmax(0, 1fr);
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem 4rem;
+}
+
+.indice {
+  position: sticky;
+  top: 1rem;
+  align-self: start;
+  background: var(--tarjeta);
+  border: 1px solid var(--borde);
+  border-radius: 10px;
+  padding: 1rem 1.2rem;
+  font-size: .92rem;
+  max-height: calc(100vh - 2rem);
+  overflow: auto;
+}
+
+.indice h2 { font-size: 1rem; margin: 0 0 .5rem; }
+.indice ol { padding-left: 1.1rem; margin: 0; }
+.indice li { margin: .25rem 0; }
+.indice a { text-decoration: none; color: var(--texto); }
+.indice a:hover { color: var(--azul); }
+
+main section {
+  background: var(--tarjeta);
+  border: 1px solid var(--borde);
+  border-radius: 10px;
+  padding: 1.5rem 2rem;
+  margin-bottom: 1.5rem;
+}
+
+main h2 { margin-top: 0; padding-bottom: .4rem; border-bottom: 2px solid var(--borde); }
+main h3 { margin-top: 1.8rem; }
+
+figure { margin: 1.2rem 0; }
+
+figure img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  border: 1px solid var(--borde);
+  border-radius: 8px;
+  margin: 0 auto;
+}
+
+figure.terminal img { border: 0; }
+
+figcaption { font-size: .88rem; color: var(--suave); text-align: center; margin-top: .4rem; }
+
+pre {
+  background: #0d1117;
+  color: #e6edf3;
+  padding: 1rem;
+  border-radius: 8px;
+  overflow-x: auto;
+  font-size: .88rem;
+  line-height: 1.45;
+}
+
+code { font-family: ui-monospace, "Cascadia Code", Consolas, monospace; }
+
+p code, li code, td code {
+  background: #eef1f5;
+  padding: .1em .35em;
+  border-radius: 4px;
+  font-size: .9em;
+}
+
+table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: .93rem; }
+th, td { border: 1px solid var(--borde); padding: .5rem .6rem; text-align: left; vertical-align: top; }
+th { background: #eef1f5; }
+
+.tabla-scroll { overflow-x: auto; }
+
+.rama {
+  display: inline-block;
+  font-family: ui-monospace, monospace;
+  font-size: .85em;
+  padding: .05em .5em;
+  border-radius: 999px;
+  color: #fff;
+  white-space: nowrap;
+}
+
+.r-main { background: var(--main); }
+.r-develop { background: var(--develop); }
+.r-feature { background: var(--feature); }
+.r-release { background: var(--release); }
+.r-hotfix { background: var(--hotfix); }
+
+.nota {
+  border-left: 4px solid var(--azul);
+  background: #eef4ff;
+  padding: .8rem 1rem;
+  border-radius: 0 8px 8px 0;
+  margin: 1rem 0;
+}
+
+.paso {
+  display: inline-block;
+  background: var(--azul-oscuro);
+  color: #fff;
+  font-weight: 700;
+  font-size: .8rem;
+  padding: .15rem .6rem;
+  border-radius: 999px;
+  margin-right: .4rem;
+  vertical-align: middle;
+}
+
+.diagrama { background: #fff; border: 1px solid var(--borde); border-radius: 8px; padding: .5rem; }
+
+.pie {
+  text-align: center;
+  color: var(--suave);
+  font-size: .9rem;
+  padding: 2rem 1rem;
+}
+
+@media (max-width: 900px) {
+  .layout { grid-template-columns: 1fr; }
+  .indice { position: static; max-height: none; }
+  main section { padding: 1.2rem 1rem; }
+}
