@@ -1,0 +1,505 @@
+<!doctype html>
+<html lang="es">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Práctica 1 · Git y Git Flow · Documentación</title>
+  <meta name="description" content="Documentación del desarrollo de la web «JavaScript en el DOM» siguiendo la metodología Git Flow.">
+  <link rel="icon" href="demo/favicon.ico" sizes="any">
+  <link rel="stylesheet" href="css/docs.css">
+</head>
+
+<body>
+
+  <header class="cabecera">
+    <p>Despliegue de Aplicaciones Web · Práctica 1 · Sistemas de control de versiones</p>
+    <h1>Desarrollo del curso «JavaScript en el DOM» con Git Flow</h1>
+    <p>Documentación del proceso seguido por el equipo (Usuario 1, Usuario 2 y Usuario 3)</p>
+    <nav class="enlaces" aria-label="Enlaces del proyecto">
+      <a href="https://github.com/AndreuSempere/practica-git-flow">Repositorio</a>
+      <a href="demo/index.html">Ver la web (v1.0.1)</a>
+      <a href="https://github.com/users/AndreuSempere/projects/2">Proyecto en GitHub</a>
+      <a href="https://github.com/AndreuSempere/practica-git-flow/releases">Releases</a>
+    </nav>
+  </header>
+
+  <div class="layout">
+    <aside class="indice" aria-label="Índice">
+      <h2>Índice</h2>
+      <ol>
+        <li><a href="#introduccion">Introducción teórica</a>
+          <ol>
+            <li><a href="#git">¿Qué es Git?</a></li>
+            <li><a href="#gitflow">La metodología Git Flow</a></li>
+            <li><a href="#porque">¿Por qué Git Flow?</a></li>
+            <li><a href="#commits">Buenas prácticas en commits</a></li>
+          </ol>
+        </li>
+        <li><a href="#proceso">Proceso realizado</a>
+          <ol>
+            <li><a href="#preparacion">Preparación del entorno</a></li>
+            <li><a href="#usuario1">Usuario 1: repositorio y estructura</a></li>
+            <li><a href="#usuario2">Usuario 2: contenido y atributos</a></li>
+            <li><a href="#usuario3">Usuario 3: estilos y release v1.0</a></li>
+            <li><a href="#hotfix">Usuario 1: hotfix milloresV_1_0</a></li>
+            <li><a href="#github">Publicación en GitHub</a></li>
+            <li><a href="#proyecto">Proyecto (tablero) y colaborador</a></li>
+            <li><a href="#ghpages">Rama gh-pages y GitHub Pages</a></li>
+          </ol>
+        </li>
+        <li><a href="#resultado">Resultado final</a></li>
+      </ol>
+    </aside>
+
+    <main>
+      <!-- ============================================================ -->
+      <section id="introduccion">
+        <h2>1. Introducción teórica</h2>
+
+        <h3 id="git">1.1 ¿Qué es Git?</h3>
+        <p>
+          <strong>Git</strong> es un <strong>sistema de control de versiones distribuido</strong> creado en 2005 por Linus
+          Torvalds para el desarrollo del núcleo Linux. Un sistema de control de versiones registra los cambios que se
+          hacen sobre un conjunto de archivos a lo largo del tiempo, de modo que podemos saber quién cambió qué y cuándo,
+          volver a una versión anterior y trabajar varias personas a la vez sobre el mismo proyecto sin pisarse.
+        </p>
+        <p>
+          Que sea <em>distribuido</em> significa que cada desarrollador tiene en su ordenador una copia completa del
+          repositorio, con todo su historial. Se puede trabajar sin conexión y después sincronizar con un repositorio
+          remoto (en nuestro caso, <strong>GitHub</strong>) mediante <code>git push</code> y <code>git pull</code>.
+        </p>
+        <p>Conceptos básicos que usamos durante la práctica:</p>
+        <ul>
+          <li><strong>Repositorio</strong>: carpeta del proyecto más la base de datos de Git (<code>.git</code>) con todo el historial.</li>
+          <li><strong>Commit</strong>: «foto» del estado de los archivos en un momento dado, con autor, fecha y mensaje. Se identifica por un hash SHA-1 (por ejemplo <code>f82e8a6</code>).</li>
+          <li><strong>Áreas de trabajo</strong>: directorio de trabajo → <em>staging area</em> (<code>git add</code>) → repositorio (<code>git commit</code>).</li>
+          <li><strong>Rama</strong> (<em>branch</em>): línea de desarrollo independiente. Permite trabajar en una funcionalidad sin afectar al resto.</li>
+          <li><strong>Merge</strong>: integra los cambios de una rama en otra. Con <code>--no-ff</code> se crea siempre un commit de merge que deja constancia de la rama en el historial.</li>
+          <li><strong>Etiqueta</strong> (<em>tag</em>): nombre fijo que marca un commit concreto, normalmente una versión publicada (<code>v1.0</code>).</li>
+          <li><strong>Remoto</strong>: copia del repositorio alojada en un servidor (GitHub) que sirve de punto de encuentro del equipo.</li>
+        </ul>
+
+        <h3 id="gitflow">1.2 La metodología Git Flow</h3>
+        <p>
+          <strong>Git Flow</strong> es un modelo de ramificación propuesto por Vincent Driessen en 2010. Define qué ramas
+          existen, de dónde nace cada una y a dónde se integra al terminar. Se apoya en dos <strong>ramas
+          principales</strong> que viven siempre y en tres tipos de <strong>ramas de soporte</strong> que se crean y se
+          cierran según se necesitan:
+        </p>
+        <div class="tabla-scroll">
+          <table>
+            <thead>
+              <tr><th>Rama</th><th>Nace de</th><th>Se integra en</th><th>Para qué sirve</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><span class="rama r-main">main</span></td><td>—</td><td>—</td><td>Código en producción. Cada commit de <code>main</code> es una versión publicada y lleva etiqueta.</td></tr>
+              <tr><td><span class="rama r-develop">develop</span></td><td><code>main</code></td><td>—</td><td>Rama de integración: contiene las funcionalidades terminadas para la próxima versión.</td></tr>
+              <tr><td><span class="rama r-feature">feature/*</span></td><td><code>develop</code></td><td><code>develop</code></td><td>Desarrollo de una funcionalidad concreta.</td></tr>
+              <tr><td><span class="rama r-release">release/*</span></td><td><code>develop</code></td><td><code>main</code> y <code>develop</code></td><td>Preparar una versión: cambiar número de versión, CHANGELOG y últimos ajustes. Al cerrarla se etiqueta.</td></tr>
+              <tr><td><span class="rama r-hotfix">hotfix/*</span></td><td><code>main</code></td><td><code>main</code> y <code>develop</code></td><td>Corregir o mejorar urgentemente una versión que ya está en producción. Genera una nueva etiqueta.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>
+          Para no tener que escribir a mano todos los <code>git checkout</code>, <code>git merge --no-ff</code> y
+          <code>git tag</code>, existe la extensión <strong>git-flow</strong> (usamos la edición AVH), que añade comandos
+          de alto nivel:
+        </p>
+        <pre><code>git flow init                       # crea main y develop y configura los prefijos
+git flow feature start &lt;nombre&gt;    # crea feature/&lt;nombre&gt; desde develop
+git flow feature finish &lt;nombre&gt;   # merge a develop
+git flow release start &lt;versión&gt;   # crea release/&lt;versión&gt; desde develop
+git flow release finish &lt;versión&gt;  # merge a main + tag + merge a develop
+git flow hotfix start &lt;nombre&gt;     # crea hotfix/&lt;nombre&gt; desde main
+git flow hotfix finish &lt;nombre&gt;    # merge a main + tag + merge a develop</code></pre>
+        <p>El historial real de este proyecto, dibujado por carriles, queda así:</p>
+        <figure class="diagrama">
+          <img src="img/diagrama-git-flow.svg" alt="Diagrama del historial del proyecto: carriles main, hotfix, release, develop y feature con sus commits y merges">
+          <figcaption>Figura 1. Historial Git Flow del proyecto (hash de cada commit y usuario responsable).</figcaption>
+        </figure>
+
+        <h3 id="porque">1.3 ¿Por qué utilizamos Git Flow?</h3>
+        <ul>
+          <li><strong>Trabajo en paralelo sin conflictos</strong>: somos tres personas y cada una desarrolla su sección en su propia rama <code>feature/*</code>. Nadie toca <code>develop</code> ni <code>main</code> directamente.</li>
+          <li><strong><code>main</code> siempre estable</strong>: el cliente solo ve código que ha pasado por una <code>release</code>. Lo que está a medias vive en <code>develop</code> o en las features.</li>
+          <li><strong>Versiones identificables</strong>: cada entrega queda etiquetada (<code>v1.0</code>, <code>v1.0.1</code>) y se puede descargar o volver a ella cuando se quiera.</li>
+          <li><strong>Correcciones rápidas</strong>: con un <code>hotfix</code> se puede mejorar la versión publicada sin arrastrar trabajo sin terminar de <code>develop</code>, y la mejora vuelve también a <code>develop</code> automáticamente.</li>
+          <li><strong>Trazabilidad</strong>: los merges <code>--no-ff</code> y los mensajes de commit permiten saber qué funcionalidad introdujo cada cambio y quién la hizo. Es justo lo que el cliente necesita para ver que trabajamos con método.</li>
+        </ul>
+
+        <h3 id="commits">1.4 Buenas prácticas en los mensajes de commit</h3>
+        <p>Todos los commits siguen la convención <a href="https://www.conventionalcommits.org/es/v1.0.0/">Conventional Commits</a>:</p>
+        <pre><code>&lt;tipo&gt;(&lt;ámbito&gt;): &lt;descripción en imperativo, en minúsculas y sin punto&gt; [Usuario N]
+
+&lt;cuerpo opcional: qué se ha hecho y por qué&gt;
+
+Refs #&lt;issue&gt;</code></pre>
+        <ul>
+          <li><strong>Tipo</strong>: <code>feat</code> (nueva funcionalidad), <code>fix</code> (corrección/mejora), <code>docs</code> (documentación), <code>chore</code> (tareas de mantenimiento: versión, dependencias…).</li>
+          <li><strong>Ámbito</strong>: parte del proyecto afectada (<code>layout</code>, <code>contenido</code>, <code>atributos</code>, <code>estilos</code>, <code>nav</code>, <code>release</code>).</li>
+          <li><strong>Asunto corto</strong> (≈ 50-70 caracteres) en imperativo: «añade», «mejora», «adapta».</li>
+          <li><strong>Commits pequeños y atómicos</strong>: un cambio lógico por commit (por ejemplo, la página de una sección y el enlace del menú van en commits separados).</li>
+          <li><strong>[Usuario N]</strong>: como pide el enunciado, cada mensaje indica qué usuario simulado lo ha hecho. En los merges generados por git-flow lo añade automáticamente un <em>hook</em> <code>prepare-commit-msg</code>.</li>
+          <li><strong>Refs #N</strong>: enlaza el commit con el issue de GitHub de esa rama, que es la tarjeta del proyecto.</li>
+        </ul>
+      </section>
+
+      <!-- ============================================================ -->
+      <section id="proceso">
+        <h2>2. Proceso realizado</h2>
+        <p>
+          A continuación se documenta, paso a paso y con capturas, todo lo que ha hecho cada miembro del equipo. Las
+          capturas de terminal muestran la salida real de los comandos; en el <em>prompt</em> aparece qué usuario los
+          ejecuta y en qué rama está (<code>usuario1@equipo-dev … (develop)</code>).
+        </p>
+
+        <h3 id="preparacion">2.1 Preparación del entorno</h3>
+        <p>Cada miembro del equipo configura su identidad y tiene instalada la extensión git-flow:</p>
+        <pre><code>git config --global user.name  "Usuario 1 (Andreu Sempere)"
+git config --global user.email "163463293+AndreuSempere@users.noreply.github.com"
+git flow version        # 1.12.x (AVH Edition)</code></pre>
+        <p>
+          Además, cada uno añade un <em>hook</em> local para que los commits de merge que genera git-flow también lleven
+          el nombre del usuario:
+        </p>
+        <pre><code># .git/hooks/prepare-commit-msg
+#!/bin/sh
+if [ "$2" = "merge" ] &amp;&amp; [ -n "$USUARIO" ]; then
+  sed -i "1s/\$/ [Usuario $USUARIO]/" "$1"
+fi</code></pre>
+        <p>
+          Cada rama de trabajo tiene asociado un <strong>issue</strong> en GitHub (#1 a #6) con la descripción de la
+          tarea; esos issues son las tarjetas del <a href="#proyecto">proyecto</a>.
+        </p>
+
+        <!-- ---------------- USUARIO 1 ---------------- -->
+        <h3 id="usuario1">2.2 Usuario 1: creación del repositorio, Git Flow y estructura inicial</h3>
+
+        <h4><span class="paso">Paso 1</span>Crear el repositorio e inicializar Git Flow</h4>
+        <p>
+          El Usuario 1, el más experimentado, crea el repositorio con un primer commit (el <code>README.md</code> con la
+          descripción del proyecto y la tabla de ramas) y ejecuta <code>git flow init -d</code>, que crea la rama
+          <span class="rama r-develop">develop</span> a partir de <span class="rama r-main">main</span> y deja configurados
+          los prefijos <code>feature/</code>, <code>release/</code> y <code>hotfix/</code>.
+        </p>
+        <figure class="terminal">
+          <img src="img/term-01-init.png" alt="Terminal: git init, primer commit y git flow init -d">
+          <figcaption>Captura 1. <code>git init</code>, commit inicial y <code>git flow init -d</code> (ramas iniciales <code>main</code> y <code>develop</code>).</figcaption>
+        </figure>
+        <p>Después crea el repositorio vacío en GitHub y sube las dos ramas iniciales:</p>
+        <pre><code>git remote add origin https://github.com/AndreuSempere/practica-git-flow.git
+git push -u origin main
+git push -u origin develop</code></pre>
+
+        <h4><span class="paso">Paso 2</span>feature/estructuraInicial con el HTML5 Boilerplate</h4>
+        <p>
+          Abre la rama <span class="rama r-feature">feature/estructuraInicial</span> y añade la plantilla
+          <a href="https://github.com/h5bp/html5-boilerplate">HTML5 Boilerplate v9.0.1</a> tal cual se descarga, en un
+          commit propio. A continuación implementa la estructura pedida por el cliente: cabecera con el nombre del curso
+          e imagen de fondo, barra de navegación con el enlace a <em>Home</em>, footer y una breve descripción del curso
+          en la parte central. Por último adapta los metadatos del boilerplate (nombre, idioma, página 404).
+        </p>
+        <figure class="terminal">
+          <img src="img/term-02-feature-estructura-1.png" alt="Terminal: git flow feature start estructuraInicial y commits">
+          <figcaption>Captura 2. Creación de la feature y commits del boilerplate y de la estructura.</figcaption>
+        </figure>
+        <figure class="terminal">
+          <img src="img/term-02-feature-estructura-2.png" alt="Terminal: más commits y git flow feature finish">
+          <figcaption>Captura 3. Último commit y cierre con <code>git flow feature finish -k --no-ff estructuraInicial</code>.</figcaption>
+        </figure>
+        <figure class="terminal">
+          <img src="img/term-02-feature-estructura-3.png" alt="Terminal: git log --graph tras la primera feature">
+          <figcaption>Captura 4. Historial tras integrar la feature en <code>develop</code>.</figcaption>
+        </figure>
+        <div class="nota">
+          Usamos <code>--no-ff</code> para que siempre exista un commit de merge (aunque fuera posible un
+          <em>fast-forward</em>) y <code>-k</code> (<em>keep</em>) para conservar la rama de la feature y poder
+          subirla a GitHub como evidencia del proceso.
+        </div>
+        <figure>
+          <img src="img/web-01-home.webp" alt="Página Home con cabecera, navegación, descripción y footer">
+          <figcaption>Captura 5. Resultado de la estructura inicial: página <em>Home</em>.</figcaption>
+        </figure>
+        <pre><code>git push origin develop feature/estructuraInicial</code></pre>
+
+        <!-- ---------------- USUARIO 2 ---------------- -->
+        <h3 id="usuario2">2.3 Usuario 2: features contingutHTML y atributsHTML</h3>
+
+        <h4><span class="paso">Paso 3</span>feature/contingutHTML</h4>
+        <p>
+          El Usuario 2 actualiza <code>develop</code> (<code>git pull</code>) y abre la rama
+          <span class="rama r-feature">feature/contingutHTML</span>. Crea la página <code>contenido-html.html</code> con
+          ejemplos de <code>innerHTML</code> basados en el
+          <a href="https://www.w3schools.com/js/tryit.asp?filename=tryjs_intro_inner_html">ejemplo de W3Schools</a>
+          (cambiar el texto de un párrafo y generar una lista desde un array), con la explicación del código, y en otro
+          commit añade el enlace en la navegación.
+        </p>
+        <figure class="terminal">
+          <img src="img/term-03-feature-contenido.png" alt="Terminal: feature contingutHTML de principio a fin">
+          <figcaption>Captura 6. <code>git flow feature start contingutHTML</code>, commits y <code>finish</code>.</figcaption>
+        </figure>
+        <figure>
+          <img src="img/web-02-contenido.webp" alt="Sección Modificar contenido HTML con los ejemplos">
+          <figcaption>Captura 7. Sección «Modificar contenido HTML» (ejemplo 1 ya ejecutado).</figcaption>
+        </figure>
+
+        <h4><span class="paso">Paso 4</span>feature/atributsHTML</h4>
+        <p>
+          Con la primera feature ya integrada, abre <span class="rama r-feature">feature/atributsHTML</span>. Añade las
+          imágenes de la bombilla, la página <code>atributos-html.html</code> con tres ejemplos comentados
+          (<code>src</code>/<code>alt</code>, el atributo booleano <code>disabled</code> con
+          <code>setAttribute</code> y <code>getAttribute</code>/<code>setAttribute</code> sobre un enlace) y el enlace en
+          la navegación, cada cosa en su commit.
+        </p>
+        <figure class="terminal">
+          <img src="img/term-04-feature-atributos.png" alt="Terminal: feature atributsHTML de principio a fin">
+          <figcaption>Captura 8. Feature <code>atributsHTML</code>: tres commits y merge en <code>develop</code>.</figcaption>
+        </figure>
+        <figure>
+          <img src="img/web-03-atributos.webp" alt="Sección Modificar atributos HTML con la bombilla encendida">
+          <figcaption>Captura 9. Sección «Modificar atributos HTML» (bombilla encendida tras pulsar el botón).</figcaption>
+        </figure>
+        <pre><code>git push origin develop feature/contingutHTML feature/atributsHTML</code></pre>
+
+        <!-- ---------------- USUARIO 3 ---------------- -->
+        <h3 id="usuario3">2.4 Usuario 3: feature estilsCSS y release v1.0</h3>
+
+        <h4><span class="paso">Paso 5</span>feature/estilsCSS</h4>
+        <p>
+          El Usuario 3, recién llegado a la empresa, sigue el mismo procedimiento. En
+          <span class="rama r-feature">feature/estilsCSS</span> crea <code>estilos-css.html</code>,
+          <code>js/estilos.js</code> y <code>css/estilos.css</code> con cuatro ejemplos comentados basados en el
+          <a href="https://www.w3schools.com/js/tryit.asp?filename=tryjs_intro_style">ejemplo de W3Schools</a>:
+          <code>style.fontSize</code>, colores con <code>&lt;input type="color"&gt;</code>, mostrar/ocultar con
+          <code>display</code> y un modo oscuro con <code>classList.toggle</code>. El enlace del menú se coloca entre
+          «contenido» y «atributos», como en el esquema del cliente.
+        </p>
+        <figure class="terminal">
+          <img src="img/term-05-feature-estilos-1.png" alt="Terminal: feature estilsCSS">
+          <figcaption>Captura 10. Feature <code>estilsCSS</code>: commits y cierre.</figcaption>
+        </figure>
+        <figure class="terminal">
+          <img src="img/term-05-feature-estilos-2.png" alt="Terminal: git log --graph de develop con las cuatro features">
+          <figcaption>Captura 11. <code>develop</code> con las cuatro features integradas.</figcaption>
+        </figure>
+        <figure>
+          <img src="img/web-04-estilos.webp" alt="Sección Modificar estilos CSS con los cuatro ejemplos">
+          <figcaption>Captura 12. Sección «Modificar estilos CSS».</figcaption>
+        </figure>
+
+        <h4><span class="paso">Paso 6</span>release/v1.0</h4>
+        <p>
+          Con todas las features en <code>develop</code>, el Usuario 3 abre la rama
+          <span class="rama r-release">release/v1.0</span>, sube la versión de <code>package.json</code> a
+          <code>1.0.0</code> y crea el <code>CHANGELOG.md</code>. Al cerrar la release, git-flow hace el merge en
+          <code>main</code>, crea la etiqueta anotada <strong><code>v1.0</code></strong> y hace el merge de vuelta en
+          <code>develop</code>. El mensaje de la etiqueta se pasa en un fichero con <code>-f</code>.
+        </p>
+        <figure class="terminal">
+          <img src="img/term-06-release-1.png" alt="Terminal: git flow release start v1.0 y finish">
+          <figcaption>Captura 13. <code>git flow release start v1.0</code>, commit de versión y <code>release finish</code>.</figcaption>
+        </figure>
+        <figure class="terminal">
+          <img src="img/term-06-release-2.png" alt="Terminal: etiquetas y grafo tras la release">
+          <figcaption>Captura 14. Etiqueta <code>v1.0</code> y grafo con <code>main</code> y <code>develop</code> sincronizadas.</figcaption>
+        </figure>
+        <pre><code>git push origin main develop release/v1.0 feature/estilsCSS
+git push origin --tags</code></pre>
+
+        <!-- ---------------- HOTFIX ---------------- -->
+        <h3 id="hotfix">2.5 Usuario 1: hotfix/milloresV_1_0</h3>
+        <h4><span class="paso">Paso 7</span>Mejorar la sección de contenido en producción</h4>
+        <p>
+          El Usuario 1, encargado de las pruebas, detecta que en la v1.0 el ejemplo 1 de «Modificar contenido HTML» solo
+          se puede ejecutar una vez y que faltaría explicar la diferencia entre <code>innerHTML</code> y
+          <code>textContent</code>. Como el cambio afecta a la versión publicada, abre un
+          <span class="rama r-hotfix">hotfix/milloresV_1_0</span> desde <code>main</code>:
+        </p>
+        <ul>
+          <li>Botón «Restablecer» en el ejemplo 1 y <code>aria-live</code> en los resultados.</li>
+          <li>Nuevo ejemplo 3 que compara <code>innerHTML</code> con <code>textContent</code> y explica el riesgo de XSS.</li>
+          <li>Versión <code>1.0.1</code> en <code>package.json</code> y en el CHANGELOG.</li>
+        </ul>
+        <p>
+          Al cerrar el hotfix con <code>-T v1.0.1</code> se etiqueta la nueva versión en <code>main</code> y la mejora
+          se integra también en <code>develop</code>.
+        </p>
+        <figure class="terminal">
+          <img src="img/term-07-hotfix-1.png" alt="Terminal: git flow hotfix start milloresV_1_0 y commits">
+          <figcaption>Captura 15. <code>git flow hotfix start milloresV_1_0</code> (desde <code>main</code>), commits y <code>hotfix finish</code>.</figcaption>
+        </figure>
+        <figure class="terminal">
+          <img src="img/term-07-hotfix-2.png" alt="Terminal: ramas, etiquetas y grafo final">
+          <figcaption>Captura 16. Ramas, etiquetas y grafo final del repositorio.</figcaption>
+        </figure>
+        <figure>
+          <img src="img/web-05-hotfix.webp" alt="Nuevo ejemplo 3 innerHTML frente a textContent">
+          <figcaption>Captura 17. Nuevo ejemplo 3 añadido por el hotfix.</figcaption>
+        </figure>
+        <pre><code>git push origin main develop hotfix/milloresV_1_0
+git push origin --tags</code></pre>
+
+        <!-- ---------------- GITHUB ---------------- -->
+        <h3 id="github">2.6 Publicación en GitHub</h3>
+        <p>
+          Tras los <code>push</code> de cada usuario, el repositorio
+          <a href="https://github.com/AndreuSempere/practica-git-flow">AndreuSempere/practica-git-flow</a> contiene las
+          dos ramas principales, todas las ramas de soporte y las dos etiquetas.
+        </p>
+        <figure>
+          <img src="img/gh-01-repo.jpg" alt="Página principal del repositorio en GitHub">
+          <figcaption>Captura 18. Repositorio en GitHub (rama <code>main</code> en v1.0.1).</figcaption>
+        </figure>
+        <figure>
+          <img src="img/gh-02-ramas.jpg" alt="Listado de ramas en GitHub">
+          <figcaption>Captura 19. Ramas: <code>main</code>, <code>develop</code>, cuatro <code>feature/*</code>, <code>release/v1.0</code>, <code>hotfix/milloresV_1_0</code> y <code>gh-pages</code>.</figcaption>
+        </figure>
+        <figure>
+          <img src="img/gh-04-commits.jpg" alt="Listado de commits de develop en GitHub">
+          <figcaption>Captura 20. Commits en <code>develop</code>: cada mensaje indica el usuario.</figcaption>
+        </figure>
+        <figure>
+          <img src="img/gh-03-tags.jpg" alt="Etiquetas v1.0 y v1.0.1 en GitHub">
+          <figcaption>Captura 21. Etiquetas <code>v1.0</code> y <code>v1.0.1</code>.</figcaption>
+        </figure>
+        <figure>
+          <img src="img/gh-05-releases.jpg" alt="Releases v1.0 y v1.0.1 en GitHub">
+          <figcaption>Captura 22. Releases publicadas a partir de las etiquetas.</figcaption>
+        </figure>
+
+        <!-- ---------------- PROYECTO ---------------- -->
+        <h3 id="proyecto">2.7 Proyecto de GitHub (tablero) y colaborador</h3>
+        <p>
+          Se ha creado el proyecto
+          <a href="https://github.com/users/AndreuSempere/projects/2">«Práctica Git Flow · Curso JavaScript en el
+          DOM»</a>, vinculado al repositorio. Cada <code>feature</code>, la <code>release</code> y el
+          <code>hotfix</code> es un issue (#1-#6) con campos personalizados: <strong>Tipo</strong>,
+          <strong>Responsable</strong>, <strong>Rama</strong>, <strong>Origen → Destino</strong>, <strong>Versión /
+          Tag</strong>, <strong>Commits</strong>, fechas y etiquetas. El tablero agrupa las tarjetas por tipo de rama.
+        </p>
+        <figure>
+          <img src="img/gh-06-tablero.jpg" alt="Tablero del proyecto con columnas feature, release y hotfix">
+          <figcaption>Captura 23. Vista «Tablero Git Flow»: columnas <code>feature</code>, <code>release</code> y <code>hotfix</code>.</figcaption>
+        </figure>
+        <figure>
+          <img src="img/gh-07-tabla.jpg" alt="Vista de tabla del proyecto con todos los campos">
+          <figcaption>Captura 24. Vista de tabla con toda la información de cada rama.</figcaption>
+        </figure>
+        <figure>
+          <img src="img/gh-08-issue.jpg" alt="Issue del hotfix con su descripción y commits relacionados">
+          <figcaption>Captura 25. Issue #6 (hotfix): descripción, comandos y commits que lo referencian.</figcaption>
+        </figure>
+        <p>
+          El usuario <a href="https://github.com/enminqui2">enminqui2</a> tiene acceso como <strong>colaborador</strong>
+          tanto del repositorio (permiso de escritura) como del proyecto (rol <em>Write</em>).
+        </p>
+        <figure>
+          <img src="img/gh-09-colaborador-repo.jpg" alt="Colaboradores del repositorio con enminqui2 invitado">
+          <figcaption>Captura 26. enminqui2 como colaborador del repositorio.</figcaption>
+        </figure>
+        <figure>
+          <img src="img/gh-10-colaborador-proyecto.jpg" alt="Acceso al proyecto con enminqui2 como Write">
+          <figcaption>Captura 27. enminqui2 con acceso de escritura al proyecto.</figcaption>
+        </figure>
+
+        <!-- ---------------- GH-PAGES ---------------- -->
+        <h3 id="ghpages">2.8 Rama gh-pages y GitHub Pages</h3>
+        <p>
+          La documentación (esta página) está en la rama <span class="rama r-main">gh-pages</span>, creada como rama
+          <em>huérfana</em> para que no comparta historial con el código:
+        </p>
+        <pre><code>git switch --orphan gh-pages
+# index.html + css/ + img/ (capturas) + demo/ (web publicada, v1.0.1)
+git add -A
+git commit -m "docs: añade documentación del proceso Git Flow [Usuario 1]"
+git push -u origin gh-pages</code></pre>
+        <p>
+          La carpeta <code>demo/</code> contiene la versión <code>v1.0.1</code> de la web para que el cliente pueda
+          probarla directamente: <a href="demo/index.html">abrir la web</a>. En <em>Settings → Pages</em> se publica la
+          rama <code>gh-pages</code> desde la raíz.
+        </p>
+        <figure>
+          <img src="img/gh-11-pages.jpg" alt="Configuración de GitHub Pages con la rama gh-pages">
+          <figcaption>Captura 28. GitHub Pages publicando la rama <code>gh-pages</code>.</figcaption>
+        </figure>
+      </section>
+
+      <!-- ============================================================ -->
+      <section id="resultado">
+        <h2>3. Resultado final</h2>
+        <div class="tabla-scroll">
+          <table>
+            <thead>
+              <tr><th>Rama</th><th>Usuario</th><th>Commits</th><th>Resultado</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><span class="rama r-main">main</span></td><td>U1</td><td><code>865e7f2</code></td><td>Commit inicial; recibe la release y el hotfix (etiquetas <code>v1.0</code> y <code>v1.0.1</code>).</td></tr>
+              <tr><td><span class="rama r-develop">develop</span></td><td>U1</td><td>—</td><td>Creada con <code>git flow init</code>; integra todas las ramas.</td></tr>
+              <tr><td><span class="rama r-feature">feature/estructuraInicial</span></td><td>U1</td><td>3</td><td>Boilerplate, cabecera, navegación, footer y Home.</td></tr>
+              <tr><td><span class="rama r-feature">feature/contingutHTML</span></td><td>U2</td><td>2</td><td>Sección «Modificar contenido HTML».</td></tr>
+              <tr><td><span class="rama r-feature">feature/atributsHTML</span></td><td>U2</td><td>3</td><td>Sección «Modificar atributos HTML».</td></tr>
+              <tr><td><span class="rama r-feature">feature/estilsCSS</span></td><td>U3</td><td>2</td><td>Sección «Modificar estilos CSS».</td></tr>
+              <tr><td><span class="rama r-release">release/v1.0</span></td><td>U3</td><td>1</td><td>Versión 1.0.0, CHANGELOG, etiqueta <code>v1.0</code>.</td></tr>
+              <tr><td><span class="rama r-hotfix">hotfix/milloresV_1_0</span></td><td>U1</td><td>2</td><td>Mejoras en contenido HTML, etiqueta <code>v1.0.1</code>.</td></tr>
+              <tr><td><span class="rama r-main">gh-pages</span></td><td>U1</td><td>—</td><td>Documentación publicada con GitHub Pages.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>Grafo completo del repositorio (<code>git log --oneline --graph --all</code>):</p>
+        <pre><code>*   61dc456 Merge tag 'v1.0.1' into develop [Usuario 1]
+|\
+| *   f82e8a6 Merge branch 'hotfix/milloresV_1_0' [Usuario 1]        (main, tag: v1.0.1)
+| |\
+| | * e195ea7 chore(release): incrementa la versión a v1.0.1 [Usuario 1]
+| | * a268775 fix(contenido): mejora la sección «Modificar contenido HTML» [Usuario 1]
+| |/
+* | 10705ae Merge tag 'v1.0' into develop [Usuario 3]
+|\|
+| *   08f6dcd Merge branch 'release/v1.0' [Usuario 3]                 (tag: v1.0)
+| |\
+| | * 497322c chore(release): prepara la versión v1.0 [Usuario 3]
+| |/
+|/|
+* |   19ccaeb Merge branch 'feature/estilsCSS' into develop [Usuario 3]
+|\ \
+| * | 4e3e757 feat(nav): añade enlace a «Modificar estilos CSS» en la navegación [Usuario 3]
+| * | a90f992 feat(estilos): añade sección «Modificar estilos CSS» con ejemplos comentados [Usuario 3]
+|/ /
+* |   da6606a Merge branch 'feature/atributsHTML' into develop [Usuario 2]
+|\ \
+| * | 514b0bc feat(nav): añade enlace a «Modificar atributos HTML» en la navegación [Usuario 2]
+| * | 02b3ce0 feat(atributos): añade sección «Modificar atributos HTML» con ejemplos [Usuario 2]
+| * | b255f0a feat(atributos): añade imágenes de bombilla encendida y apagada [Usuario 2]
+|/ /
+* |   b0becd1 Merge branch 'feature/contingutHTML' into develop [Usuario 2]
+|\ \
+| * | 28d75ee feat(nav): añade enlace a «Modificar contenido HTML» en la navegación [Usuario 2]
+| * | 6ce08e6 feat(contenido): añade sección «Modificar contenido HTML» con ejemplos [Usuario 2]
+|/ /
+* |   b49d686 Merge branch 'feature/estructuraInicial' into develop [Usuario 1]
+|\ \
+| |/
+|/|
+| * d9f4765 chore: adapta metadatos del boilerplate al curso [Usuario 1]
+| * 41a300f feat(layout): añade cabecera, barra de navegación y footer [Usuario 1]
+| * facb8c0 chore: añade HTML5 Boilerplate v9.0.1 como base del proyecto [Usuario 1]
+|/
+* 865e7f2 docs: añade README con la descripción del proyecto [Usuario 1]</code></pre>
+        <h3>Enlaces de entrega</h3>
+        <ul>
+          <li>Repositorio: <a href="https://github.com/AndreuSempere/practica-git-flow">https://github.com/AndreuSempere/practica-git-flow</a></li>
+          <li>Documentación (GitHub Pages): <a href="https://andreusempere.github.io/practica-git-flow/">https://andreusempere.github.io/practica-git-flow/</a></li>
+          <li>Proyecto: <a href="https://github.com/users/AndreuSempere/projects/2">https://github.com/users/AndreuSempere/projects/2</a></li>
+        </ul>
+      </section>
+    </main>
+  </div>
+
+  <footer class="pie">
+    Práctica 1 · Despliegue de Aplicaciones Web · Andreu Sempere · 2026
+  </footer>
+
+</body>
+
+</html>
