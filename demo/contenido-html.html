@@ -1,0 +1,146 @@
+<!doctype html>
+<html class="no-js" lang="es">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Modificar contenido HTML · JavaScript en el DOM</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/main.css">
+  <meta name="description" content="Curso práctico de JavaScript aplicado a la interacción con elementos HTML.">
+
+  <meta property="og:title" content="JavaScript en el DOM · Curso práctico">
+  <meta property="og:type" content="website">
+
+  <link rel="icon" href="favicon.ico" sizes="any">
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icon.png">
+
+  <link rel="manifest" href="site.webmanifest">
+  <meta name="theme-color" content="#1e2a44">
+</head>
+
+<body>
+
+  <!-- Cabecera: nombre del curso sobre una imagen de fondo -->
+  <header class="cabecera">
+    <div class="cabecera__contenido">
+      <p class="cabecera__subtitulo">Curso de formación para empresas</p>
+      <h1 class="cabecera__titulo">JavaScript en el DOM</h1>
+      <p class="cabecera__lema">Aprende a dar vida a tus páginas HTML</p>
+    </div>
+  </header>
+
+  <!-- Barra de navegación principal -->
+  <nav class="navegacion" aria-label="Navegación principal">
+    <ul class="navegacion__lista">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="contenido-html.html" aria-current="page">Modificar contenido HTML</a></li>
+      <li><a href="estilos-css.html">Modificar estilos CSS</a></li>
+      <li><a href="atributos-html.html">Modificar atributos HTML</a></li>
+    </ul>
+  </nav>
+
+  <!-- Contenido principal: sección «Modificar contenido HTML» -->
+  <main class="principal">
+    <section class="tarjeta">
+      <h2>Modificar contenido HTML</h2>
+      <p>
+        Una de las cosas más útiles que puede hacer JavaScript es <strong>cambiar el contenido de un elemento
+        HTML</strong> una vez que la página ya está cargada. Para ello primero localizamos el elemento
+        (por ejemplo con <code>document.getElementById()</code>) y después modificamos su propiedad
+        <code>innerHTML</code>, que representa todo el HTML que hay dentro de ese elemento.
+      </p>
+    </section>
+
+    <!-- Ejemplo 1: cambiar el texto de un párrafo -->
+    <section class="tarjeta" id="ejemplo-1">
+      <h3>Ejemplo 1 · ¿Qué puede hacer JavaScript?</h3>
+      <div class="demo">
+        <p id="demo" aria-live="polite">JavaScript puede cambiar el contenido HTML.</p>
+        <button type="button" class="boton" id="btn-cambiar">¡Haz clic!</button>
+        <button type="button" class="boton boton--secundario" id="btn-restablecer">Restablecer</button>
+      </div>
+      <pre><code>&lt;p id="demo"&gt;JavaScript puede cambiar el contenido HTML.&lt;/p&gt;
+&lt;button type="button" id="btn-cambiar"&gt;¡Haz clic!&lt;/button&gt;
+
+// 1. Buscamos el botón por su id
+const boton = document.getElementById('btn-cambiar');
+
+// 2. Al hacer clic, sustituimos el contenido del párrafo
+boton.addEventListener('click', () =&gt; {
+  document.getElementById('demo').innerHTML = '¡Hola JavaScript!';
+});</code></pre>
+      <h4>Explicación</h4>
+      <ul>
+        <li><code>document.getElementById('demo')</code> devuelve el elemento cuyo atributo <code>id</code> vale <code>demo</code>.</li>
+        <li><code>addEventListener('click', ...)</code> indica qué función se ejecuta cuando el usuario pulsa el botón.</li>
+        <li>Al asignar un nuevo valor a <code>innerHTML</code> se reemplaza todo el contenido anterior del párrafo.</li>
+      </ul>
+    </section>
+
+    <!-- Ejemplo 2: generar HTML a partir de datos -->
+    <section class="tarjeta" id="ejemplo-2">
+      <h3>Ejemplo 2 · Generar una lista a partir de un array</h3>
+      <div class="demo">
+        <ul id="lista-temas"><li><em>La lista está vacía.</em></li></ul>
+        <button type="button" class="boton" id="btn-lista">Mostrar temario</button>
+      </div>
+      <pre><code>const temas = ['El DOM', 'Seleccionar elementos', 'Eventos', 'innerHTML'];
+
+document.getElementById('btn-lista').addEventListener('click', () =&gt; {
+  // map() convierte cada tema en un &lt;li&gt; y join('') une todo en un único texto
+  const html = temas.map((tema) =&gt; `&lt;li&gt;${tema}&lt;/li&gt;`).join('');
+  document.getElementById('lista-temas').innerHTML = html;
+});</code></pre>
+      <h4>Explicación</h4>
+      <p>
+        <code>innerHTML</code> no solo admite texto: también interpreta etiquetas. Aquí construimos una cadena con
+        varios elementos <code>&lt;li&gt;</code> usando <em>template literals</em> y la insertamos de una vez
+        dentro de la lista, que el navegador vuelve a dibujar con los nuevos elementos.
+      </p>
+    </section>
+
+    <!-- Ejemplo 3 (añadido en hotfix/milloresV_1_0): innerHTML frente a textContent -->
+    <section class="tarjeta" id="ejemplo-3">
+      <h3>Ejemplo 3 · <code>innerHTML</code> frente a <code>textContent</code></h3>
+      <div class="demo">
+        <label for="entrada-usuario">Escribe algo (prueba con <code>&lt;b&gt;hola&lt;/b&gt;</code>):</label>
+        <input id="entrada-usuario" type="text" value="&lt;b&gt;hola&lt;/b&gt;">
+        <button type="button" class="boton" id="btn-inner">Insertar con innerHTML</button>
+        <button type="button" class="boton boton--secundario" id="btn-text">Insertar con textContent</button>
+        <p>Resultado: <span id="resultado" aria-live="polite">—</span></p>
+      </div>
+      <pre><code>const entrada = document.getElementById('entrada-usuario');
+const resultado = document.getElementById('resultado');
+
+// innerHTML interpreta las etiquetas: &lt;b&gt;hola&lt;/b&gt; se ve en negrita
+document.getElementById('btn-inner').addEventListener('click', () =&gt; {
+  resultado.innerHTML = entrada.value;
+});
+
+// textContent trata todo como texto: se ven las etiquetas tal cual
+document.getElementById('btn-text').addEventListener('click', () =&gt; {
+  resultado.textContent = entrada.value;
+});</code></pre>
+      <h4>Explicación</h4>
+      <p>
+        Las dos propiedades cambian el contenido de un elemento, pero <code>innerHTML</code> <strong>interpreta</strong>
+        el texto como HTML y <code>textContent</code> lo inserta como texto plano. Cuando el contenido viene del
+        usuario es más seguro usar <code>textContent</code>: con <code>innerHTML</code> alguien podría inyectar
+        código malicioso en la página (ataque <abbr title="Cross-Site Scripting">XSS</abbr>).
+      </p>
+    </section>
+  </main>
+
+  <!-- Pie de página -->
+  <footer class="pie">
+    <p>&copy; 2026 · Curso «JavaScript en el DOM» · Práctica de Despliegue de Aplicaciones Web</p>
+    <p>Desarrollado siguiendo la metodología <em>Git Flow</em>.</p>
+  </footer>
+
+  <script src="js/app.js"></script>
+  <script src="js/contenido.js"></script>
+</body>
+
+</html>
